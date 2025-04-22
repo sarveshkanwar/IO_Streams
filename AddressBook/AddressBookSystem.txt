@@ -1,0 +1,159 @@
+mysql> CREATE DATABASE Address_Book;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| address_book       |
+| information_schema |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| school             |
+| student            |
+| sys                |
++--------------------+
+8 rows in set (0.00 sec)
+
+mysql> USE address_book;
+Database changed
+mysql> CREATE TABLE Address_Book(
+    -> first_name varchar(255) NOT NULL,
+    -> last_name varchar(255) NOT NULL,
+    -> address varchar(255) NOT NULL,
+    -> city varchar(255) NOT NULL,
+    -> state varchar(255) NOT NULL,
+    -> 
+    -> zip int NOT NULL,
+    -> phone_number int NOT NULL,
+    -> email varchar(255) NOT NULL);
+Query OK, 0 rows affected (0.03 sec)
+
+
+
+mysql> ALTER TABLE Address_Book
+    -> MODIFY phone_number varchar(15);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+mysql> INSERT INTO Address_Book
+    -> (first_name, last_name, address, city, state, zip, phone_number, email)
+    -> VALUES
+    -> ("Himanshi", "Jain", "K.D. Nagar", "Ganuar", "Haryana", 131101, "6570923452", "himanshi@gmail.com"),
+    -> ("Prashant", "Kumar", "XYZ", "Derabassi", "Chandigarh", 140104, "6784532341", "prashant@gmail.com");
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+
+
+mysql> UPDATE Address_Book
+    -> SET phone_number = "9999999999", email = "hema@gmail.com"
+    -> WHERE first_name = "Himanshi" AND last_name = "Jain";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+
+mysql> DELETE FROM Address_Book
+    -> WHERE first_name = "Prashant" AND last_name = "Kumar";
+Query OK, 1 row affected (0.01 sec)
+
+
+
+mysql> SELECT * FROM Address_Book
+    -> WHERE city = 'Ganuar';
++------------+-----------+------------+--------+---------+--------+--------------+----------------+
+| first_name | last_name | address    | city   | state   | zip    | phone_number | email          |
++------------+-----------+------------+--------+---------+--------+--------------+----------------+
+| Nazim      | ahmad     | K.D. Nagar | Ganuar | Haryana | 131101 | 9999999999   |nazim@gmail.com |
++------------+-----------+------------+--------+---------+--------+--------------+----------------+
+1 row in set (0.00 sec)
+
+
+
+mysql> SELECT city, COUNT(*) AS total_people
+    -> FROM Address_Book
+    -> GROUP BY city;
++--------+--------------+
+| city   | total_people |
++--------+--------------+
+| Ganuar |            1 |
++--------+--------------+
+1 row in set (0.00 sec)
+
+
+
+mysql> SELECT * FROM Address_Book
+    -> WHERE city = 'Ganuar'
+    -> ORDER BY first_name ASC, last_name ASC;
++------------+-----------+------------+--------+---------+--------+--------------+----------------+
+| first_name | last_name | address    | city   | state   | zip    | phone_number | email          |
++------------+-----------+------------+--------+---------+--------+--------------+----------------+
+| Himanshi   | Jain      | K.D. Nagar | Ganuar | Haryana | 131101 | 9999999999   | hema@gmail.com |
++------------+-----------+------------+--------+---------+--------+--------------+----------------+
+1 row in set (0.01 sec)
+
+
+
+mysql> ALTER TABLE Address_Book
+    -> ADD COLUMN book_name VARCHAR(100),
+    -> ADD COLUMN book_type VARCHAR(50);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+mysql> UPDATE Address_Book
+    -> SET book_name = 'Jain Family', book_type = 'Family'
+    -> WHERE first_name = 'Himanshi';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+
+mysql> INSERT INTO Address_Book
+    -> 
+    -> (first_name,last_name, address,city,state,zip,phone_number,email,book_name,book_type)
+    -> VALUES
+    -> ("Prashant","Kumar","XYZ","Derabassi","Chandigarh",140104,"9786543233","prashant@gmail.com","Avengers","Action"),
+    -> ("Rahul","Patel","ABC","Zirakpur","Chandigarh",140104,"7865423456","rahul@gmail.com","Left Alone","Mysterious");
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+
+
+mysql> SELECT book_type, COUNT(*) AS contact_count
+    -> FROM Address_Book
+    -> GROUP BY book_type;
++------------+---------------+
+| book_type  | contact_count |
++------------+---------------+
+| Family     |             1 |
+| Action     |             1 |
+| Mysterious |             1 |
++------------+---------------+
+3 rows in set (0.00 sec)
+
+
+
+mysql> UPDATE Address_Book
+    -> SET book_type = 'Friend, Family'
+    -> WHERE first_name = 'Himanshi' AND last_name = 'Jain';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+
+mysql> SELECT * FROM Address_Book;
++------------+-----------+------------+-----------+------------+--------+--------------+--------------------+-------------+----------------+
+| first_name | last_name | address    | city      | state      | zip    | phone_number | email              | book_name   | book_type      |
++------------+-----------+------------+-----------+------------+--------+--------------+--------------------+-------------+----------------+
+| Himanshi   | Jain      | K.D. Nagar | Ganuar    | Haryana    | 131101 | 9999999999   | hema@gmail.com     | Jain Family | Friend, Family |
+| Prashant   | Kumar     | XYZ        | Derabassi | Chandigarh | 140104 | 9786543233   | prashant@gmail.com | Avengers    | Action         |
+| Rahul      | Patel     | ABC        | Zirakpur  | Chandigarh | 140104 | 7865423456   | rahul@gmail.com    | Left Alone  | Mysterious     |
++------------+-----------+------------+-----------+------------+--------+--------------+--------------------+-------------+----------------+
+3 rows in set (0.01 sec)
+
